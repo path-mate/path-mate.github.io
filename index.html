@@ -41,7 +41,8 @@ header .tile{position:absolute; inset:0; pointer-events:none; opacity:.5;
 .dot.saving{background:var(--gold)} .dot.saved{background:#6FD3A7}
 .hsave{font-size:10.5px; opacity:.75; margin-top:2px}
 
-main{max-width:640px; margin:0 auto; padding:16px 14px calc(96px + env(safe-area-inset-bottom))}
+main{max-width:640px; margin:0 auto; padding:0 14px calc(96px + env(safe-area-inset-bottom))}
+section.active{padding-top:16px}
 section{display:none} section.active{display:block; animation:fade .25s ease}
 @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
 
@@ -73,7 +74,7 @@ section{display:none} section.active{display:block; animation:fade .25s ease}
 
 .subtabs{display:flex; flex-wrap:wrap; gap:7px; padding:2px 0 8px; margin-bottom:6px}
 .inttabs{position:sticky; top:var(--hh,60px); z-index:29; background:var(--paper);
-  flex-wrap:nowrap; gap:6px; padding:9px 0 8px; margin:0 0 10px; border-bottom:1px dashed var(--line);
+  flex-wrap:nowrap; gap:6px; padding:9px 14px 8px; margin:0 -14px 10px; border-bottom:1px dashed var(--line);
   box-shadow:0 8px 10px -10px rgba(0,0,0,.28)}
 .inttabs .chiptab{flex-grow:1; flex-shrink:1; flex-basis:0; min-width:0; width:auto;
   display:flex; flex-direction:column; align-items:center; gap:1px; padding:6px 4px; font-size:12.5px; line-height:1.5}
@@ -110,8 +111,9 @@ section{display:none} section.active{display:block; animation:fade .25s ease}
 .tag{font-size:10.5px; background:#EFE9DA; color:var(--muted); border-radius:99px; padding:2px 9px; font-weight:700}
 .tag.teal{background:#E2F1EF; color:var(--teal)} .tag.rose{background:#FBEFF2; color:var(--rose)}
 
-.theadbar{position:sticky; top:64px; z-index:30; display:flex; align-items:center; gap:10px;
-  background:var(--paper); padding:8px 2px 10px; border-bottom:1px dashed var(--line); margin-bottom:12px}
+.theadbar{position:sticky; top:var(--hh,60px); z-index:30; display:flex; align-items:center; gap:10px;
+  background:var(--paper); padding:10px 14px; margin:0 -14px 12px; border-bottom:1px dashed var(--line);
+  box-shadow:0 8px 10px -10px rgba(0,0,0,.28)}
 .backbtn{border:1.5px solid var(--line); background:var(--card); border-radius:10px; padding:6px 11px; font-size:13px; font-weight:700}
 .theadbar .t{flex:1; font-weight:800; font-size:15px}
 .theadbar .p{font-size:12.5px; color:var(--teal); font-weight:800}
@@ -434,6 +436,18 @@ nav#bnav button.hide{display:none}
 .steprules>summary::-webkit-details-marker{display:none}
 .steprules:not([open])>summary{margin-bottom:0}
 html[data-theme="dark"] .steprules>summary{color:#F3C6D2}
+
+.wtotal{display:flex; align-items:center; justify-content:space-between; background:var(--track);
+  border-radius:12px; padding:11px 14px; font-weight:800}
+.wtotal b{font-family:'Lalezar',cursive; font-weight:400; font-size:21px; color:var(--green)}
+.wrow{margin-bottom:13px}
+.wrow .wh{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; font-size:13.5px}
+.wrow .wh b{font-size:14.5px}
+.wrow .wh span{color:var(--muted); font-size:12.5px; font-weight:700}
+.wrow .bar{height:9px; background:var(--track); border-radius:99px; overflow:hidden}
+.wrow .bar i{display:block; height:100%; border-radius:99px}
+.wrow p.small{margin:5px 0 0}
+html[data-theme="dark"] .wtotal b{color:var(--teal2)}
 
 /* ---- بخش‌های تاشوی نتایج ---- */
 .rsec{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
@@ -1112,6 +1126,74 @@ const INT_QS=[
 'عمل‌های زیبایی با انگیزه‌ی جذابیت جنسی (پروتز سینه، لابیاپلاستی، عمل‌های مردانه و…): نظر هر کدام‌مان چیست؟ آیا انتظارش را از هم داریم و اگر یکی بخواهد، دیگری چه واکنشی نشان می‌دهد؟',
 'اگر یکی از ما در آینده گرایش یا میل تازه‌ای در خودش کشف کند، چطور صادقانه درباره‌اش حرف بزنیم؟',
 'اگر بعد از همه‌ی این گفت‌وگوها بفهمیم در این حوزه واقعاً به هم نمی‌خوریم، این برای هر کدام‌مان چقدر جدی است؟ آیا می‌تواند دلیلی برای نرسیدن به ازدواج باشد؟'];
+
+/* ================= پرسش‌های افزوده‌ی نسخه ۱٫۳٫۱ =================
+   نکته‌ی مهم: هر پرسش جدید فقط به <انتهای> فهرست موضوع خودش اضافه می‌شود
+   تا شناسه‌ی پرسش‌های قبلی (که بر پایه‌ی شماره‌ی ترتیبی است) جابه‌جا نشود. */
+const EXTRA_QS={
+ family:[
+  'اگر یکی از والدین‌مان سالمند و نیازمند مراقبت شد، نگهداری‌اش را چطور اداره می‌کنیم: خانه‌ی خودمان، پرستار، یا مرکز نگهداری؟',
+  'هزینه‌ی درمان و نگهداری والدینِ هرکدام‌مان از کجا تأمین می‌شود و سهم هرکدام چقدر است؟',
+  'اگر مراقبت از والدینِ یکی از ما، شغل یا وقت و آرامش دیگری را محدود کرد، چه می‌کنیم؟'],
+ health:[
+  'بیماری خاص، مزمن یا ارثی در هرکدام‌مان یا خانواده‌مان هست که طرف مقابل باید بداند؟',
+  'سابقه‌ی عمل جراحی مهم، بستری‌شدن یا حادثه‌ی جدی داشته‌ایم؟',
+  'داروی خاصی به‌صورت دائم مصرف می‌کنیم؟ چرا، و چه عوارضی دارد؟',
+  'اگر بوی بدن، بوی دهان یا نظافت شخصیِ یکی از ما دیگری را اذیت کند، با چه لحن و کجا این را بگوییم که به دلخوری تبدیل نشود؟'],
+ life:[
+  'نظرمان درباره‌ی تتو و پیرسینگ چیست، و اگر یکی‌مان بخواهد انجام بدهد یا پاکش کند، تصمیم با کیست؟',
+  'اگر همسرمان از ما بخواهد نوع پوشش یا ظاهرمان را تغییر بدهیم، تا کجا این خواسته را می‌پذیریم و از کجا به بعد نه؟',
+  'یکی‌مان گرمایی است و دیگری سرمایی؛ سرِ دمای خانه، کولر، بخاری و پتو چه قراری بگذاریم؟',
+  'چه غذاهایی را اصلاً دوست نداریم یا نمی‌توانیم بخوریم، و انتظار داریم دیگری چقدر رعایت کند؟',
+  'آشپزی خانه با کیست، و اگر دستپخت یکی‌مان باب میل دیگری نبود، چطور بگوییم که بی‌احترامی نشود؟',
+  'نظافت و نظم خانه را خودمان انجام می‌دهیم یا نیروی کمکی می‌گیریم؟ هزینه‌اش از کجاست و چه کسی هماهنگ می‌کند؟'],
+ leisure:[
+  'تفریح موردعلاقه‌ی هرکدام‌مان دقیقاً چیست و چند وقت یک‌بار به آن نیاز داریم؟',
+  'وقت آزادمان را بیشتر با هم بگذرانیم یا بخشی از آن جداگانه باشد؟ سهم منصفانه چقدر است؟',
+  'ورزش چه جایی در برنامه‌مان دارد و آیا از دیگری هم انتظار ورزش‌کردن داریم؟',
+  'هرکدام‌مان چقدر «تنهایی» لازم داریم، در چه ساعت‌هایی، و در آن مدت از دیگری چه انتظاری داریم؟'],
+ mind:[
+  'هرکدام‌مان بیشتر درون‌گراییم یا برون‌گرا؟ (مثال: بعد از یک مهمانی شلوغ، یکی سرحال و پرانرژی می‌شود و دیگری خسته و ساکت)',
+  'اگر یکی‌مان آخر هفته مهمانی و جمع بخواهد و دیگری خانه‌ی ساکت، برنامه را چطور می‌چینیم که هیچ‌کدام دائماً کوتاه نیاید؟',
+  'وقتی یکی‌مان بعد از یک روز سخت سکوت می‌خواهد و دیگری دقیقاً همان موقع نیاز به حرف‌زدن دارد، چه قراری بگذاریم؟'],
+ career:[
+  'ادامه‌ی تحصیل هرکدام‌مان (ارشد، دکتری یا دوره‌ی تخصصی) در برنامه هست؟ هزینه و وقتش را چطور تأمین می‌کنیم؟',
+  'اگر ادامه‌ی تحصیل یکی‌مان به مهاجرت، کم‌شدن درآمد یا دوری موقت منجر شود، تصمیم‌مان چیست؟'],
+ money:[
+  'چقدر برایمان مهم است که در حد فامیل و دوستان خرج کنیم (ماشین، مهمانی، مدل گوشی، مدرسه‌ی بچه)؟',
+  'اگر یکی‌مان خرید تجملاتی را لذت زندگی بداند و دیگری اسراف، تصمیم نهایی چطور گرفته می‌شود؟',
+  'نظرمان درباره‌ی قمار و شرط‌بندی (بازی‌های کارتی، شرط‌بندی ورزشی یا سایت‌های آنلاین) چیست؟ اگر یکی‌مان اهلش باشد یا سابقه‌اش را داشته باشد، خط قرمز و توافق‌مان چیست؟'],
+ trust:[
+  'رابطه‌ی کاری و روزمره با جنس مخالف (همکار، هم‌کلاسی، مشتری) تا کجا برایمان عادی است و از کجا خط قرمز می‌شود؟',
+  'سفر کاری، شام کاری یا جلسه‌ی دونفره با جنس مخالف چطور؟ از قبل اطلاع می‌دهیم یا لازم نیست؟'],
+ home:[
+  'اگر در سفر یا بعد از مهاجرت به محیط‌های مختلط مثل استخر، ساحل یا باشگاه رسیدیم، قاعده‌مان چیست؟',
+  'در آن محیط‌ها، نوع پوشش هرکدام‌مان را چه کسی تعیین می‌کند و اگر نظرمان یکی نبود چه می‌کنیم؟']
+};
+Object.keys(EXTRA_QS).forEach(id=>{ const t=TOPICS.find(x=>x.id===id); if(t) t.qs=t.qs.concat(EXTRA_QS[id]); });
+
+if(!TOPICS.some(t=>t.id==='fun')) TOPICS.push({id:'fun',icon:'🎬',title:'سلیقه و سرگرمی',qs:[
+  'چه سبک‌هایی از موسیقی دوست داریم و در ماشین یا خانه معمولاً چه گوش می‌دهیم؟',
+  'ژانر فیلم و سریال موردعلاقه‌ی هرکدام‌مان چیست و آیا سریال را با هم می‌بینیم یا هرکس جدا؟',
+  'اهل کتاب یا پادکست هستیم؟ چه موضوع‌هایی؟',
+  'بازی (موبایل، کنسول یا رومیزی) چه جایی در وقت‌مان دارد و مرزش کجاست؟',
+  'بیرون غذا خوردن چند وقت یک‌بار، و بیشتر کافه یا رستوران؟',
+  'سفر ایده‌آل‌مان کدام است: دریا یا کوه؟ برنامه‌ریزی‌شده یا بی‌برنامه؟',
+  'رنگ، فصل و آب‌وهوای موردعلاقه‌ی هرکدام‌مان چیست؟',
+  'هدیه را غافلگیرانه دوست داریم یا ترجیح می‌دهیم از قبل بگوییم چه می‌خواهیم؟',
+  'چه چیزهایی ما را می‌خنداند و چه نوع شوخی‌هایی را اصلاً دوست نداریم؟',
+  'رشته یا تیم ورزشی‌ای هست که دنبال کنیم و تماشایش برایمان مهم باشد؟',
+  'آخر هفته‌ی ایده‌آل هرکدام‌مان از صبح تا شب چه شکلی است؟',
+  'اگر یک روز کامل آزاد و بی‌برنامه داشتیم، هرکدام‌مان دوست داریم چه کنیم؟']});
+if(TOPIC_ORDER.indexOf('fun')<0) TOPIC_ORDER.push('fun');
+TOPICS.sort((a,b)=>TOPIC_ORDER.indexOf(a.id)-TOPIC_ORDER.indexOf(b.id));
+
+INT_QS.push(
+ 'با بازی‌های جنسی دونفره (رول‌پلی، بازی‌های تحریک‌کننده، بازی‌های کلامی و پیامکی) اوکی هستیم یا نه؟',
+ 'شرط‌بندی جنسی بین خودمان — مثلاً برنده‌ی یک بازی، خواسته‌اش را انتخاب کند — چطور؟',
+ 'اگر در سفر به سواحل یا مکان‌های برهنه و نیمه‌برهنه رسیدیم، نظر هرکدام‌مان چیست: می‌رویم، نمی‌رویم، یا فقط با شرط‌هایی؟',
+ 'در سفری که با هم می‌رویم، اگر موقعیت رابطه‌ی سه‌نفره با یک غریبه پیش بیاید — کسی که فقط همان یک شب است و بعدش هیچ دسترسی و ارتباطی با او نداریم، چه زن باشد چه مرد، از جمله سکس‌ورکر — نظر قطعی هرکدام‌مان چیست؟');
+
 const INT_FRANK_FROM=66;
 const INT_STEP3_FROM=118; // شروع پله‌ی ۳ (int_119 به بعد): فانتزی‌ها و علاقه‌های خاص
 
@@ -1280,11 +1362,16 @@ const RATE_LABELS=['اختلاف جدی','تفاهم کم','متوسط؛ نیا�
 const RATE_COLORS=['var(--r1)','var(--r2)','var(--r3)','var(--r4)','var(--r5)'];
 
 /* ================= وضعیت و ذخیره‌سازی ================= */
-/* ===== نشانی سایت معرفی‌شده در پایان بخش زناشویی =====
-   مالک برنامه فقط همین دو خط را عوض کند: نام نمایشی، و نشانی مقصد.
-   حالت پیش‌فرض: جست‌وجوی گوگل، تا بدون وابستگی به یک سایت خاص کار کند. */
-const SITE_NAME='آموزش رابطه‌ی جنسی برای زوج‌ها';
-const SITE_URL='https://www.bestsexpositions.com';
+/* ===== دکمه‌ی معرفی‌شده در پایان بخش زناشویی — قابل تغییر توسط مالک برنامه =====
+   SITE_NAME  : متن روی دکمه
+   SITE_URL   : نشانی مقصد (برای پلی‌لیست اختصاصی، لینک همان پلی‌لیست را بگذارید)
+   SITE_INTRO : یک جمله‌ی معرفی بالای دکمه
+   SITE_ADULT : اگر مقصد محتوای جنسیِ صریح دارد true کنید تا هشدار محتوای بزرگ‌سال
+                و راهنمای ترجمه‌ی سایت انگلیسی هم نمایش داده شود. */
+const SITE_NAME='پوزیشن‌های هم‌آغوشی';
+const SITE_URL='https://www.google.com/search?q='+encodeURIComponent('sex positions guide for couples'); /* ← نشانی سایت خودتان را جایگزین کنید */
+const SITE_INTRO='';
+const SITE_ADULT=true;
 
 const KEY='azmoon-tafahom-v1';
 function defaultState(){return {v:19, names:{a:'',b:''}, intimacyEnabled:false, theme:null, guideSeen:false,
@@ -1516,6 +1603,50 @@ function stepRulesInTab(k){ return `<details class="gate steprules" open>
   <button class="btn ghost sm" data-act="intclose" data-s="${k}">بستن این تب</button>
 </details>`; }
 
+
+/* ================= وزن‌دهی پرسش‌ها ================= */
+const W_LABEL={3:'حیاتی',2:'مهم',1:'سلیقه‌ای'};
+const W_DESC={3:'موضوع‌هایی که اختلاف در آن‌ها معمولاً با زمان حل نمی‌شود و می‌تواند مسیر زندگی را عوض کند.',
+ 2:'موضوع‌هایی که مهم‌اند ولی با گفت‌وگو، عادت و کمی انعطاف قابل حل‌اند.',
+ 1:'سلیقه و ذائقه؛ اختلاف در این‌ها طبیعی است و به‌تنهایی نشانه‌ی ناسازگاری نیست.'};
+const TOPIC_W={goals:3,values:3,faith:3,commit:3,trust:3,money:3,legal:3,health:3,mind:3,power:3,kids:3,conflict:3,
+ know:2,past:2,crisis:2,roles:2,home:2,career:2,comm:2,family:2,love:2,custom:2,
+ life:1,leisure:1,tech:1,fun:1};
+/* استثناها: پرسش‌هایی که وزن‌شان با موضوع‌شان فرق دارد */
+const QW_OVER={ life_16:3, life_15:2, life_20:2, health_14:2,
+ leisure_11:2, leisure_13:2, mind_12:2, mind_13:2, mind_14:2,
+ family_15:3, family_16:3, home_12:3, tech_3:2, tech_7:2 };
+function qWeight(id){ if(QW_OVER[id]) return QW_OVER[id];
+  const t=(id.indexOf('c_')===0)?'custom':String(id).split('_')[0]; return TOPIC_W[t]||2; }
+function weightedStats(){
+  const T={3:{n:0,s:0},2:{n:0,s:0},1:{n:0,s:0}}; let ws=0, wt=0;
+  activeTopics().forEach(t=>t.qs.forEach(q=>{ const v=aVal(q.id); if(!v)return;
+    const w=qWeight(q.id); T[w].n++; T[w].s+=v; ws+=w*v; wt+=w*5; }));
+  const p=(s,n)=>n?Math.round((((s/n)-1)/4)*100):null;
+  return { overall: wt? Math.round(((((ws/wt)*5)-1)/4)*100) : null,
+    tiers:[3,2,1].map(w=>({w,label:W_LABEL[w],desc:W_DESC[w],n:T[w].n,pct:p(T[w].s,T[w].n)})) };
+}
+function lightTopicStats(){ return activeTopics().filter(t=>t.qs.length&&(TOPIC_W[t.id]||2)===1).map(t=>{
+    let n=0,s=0; t.qs.forEach(q=>{ const v=aVal(q.id); if(v){n++;s+=v;} });
+    return {t, n, pct: n? Math.round((((s/n)-1)/4)*100) : null }; }).filter(x=>x.n); }
+function weightCardHTML(){
+  const W=weightedStats(); if(W.overall==null) return '';
+  const rows=W.tiers.map(x=>`<div class="wrow">
+      <div class="wh"><b>${x.label}</b><span>${x.pct==null?'—':fmt(x.pct)+'٪'} · ${fmt(x.n)} پرسش</span></div>
+      <div class="bar"><i style="width:${x.pct||0}%;background:${x.pct==null?'var(--track)':barColor(x.pct)}"></i></div>
+      <p class="small">${x.desc}</p></div>`).join('');
+  const L=lightTopicStats();
+  const chart=L.length?`<div style="margin-top:12px"><b style="font-size:13.5px">📈 نمودار پرسش‌های سلیقه‌ای</b>
+      <p class="small" style="margin:4px 0 8px">این‌ها همان‌هایی‌اند که «چه رنگی، چه سریالی، چه سفری» را می‌پرسند. پایین‌بودن‌شان نگران‌کننده نیست؛ فقط نشان می‌دهد کجا ذائقه‌تان فرق دارد.</p>
+      ${L.map(x=>`<div class="tres"><div class="tt"><span>${x.t.icon} ${x.t.title}</span><span>${fmt(x.pct)}٪</span></div>
+        <div class="bar"><i style="width:${x.pct}%;background:${barColor(x.pct)}"></i></div></div>`).join('')}</div>`:'';
+  return rsec('⚖️','تفاهم به تفکیک اهمیت',`
+    <p class="sub">همه‌ی پرسش‌ها هم‌وزن نیستند. اختلاف بر سر «سبک موسیقی» با اختلاف بر سر «بچه می‌خواهیم یا نه» یکی نیست، ولی در میانگین ساده هر دو یک اثر دارند. این‌جا هر گروه جدا حساب شده است.</p>
+    <div class="wtotal"><span>تفاهم وزنی کل</span><b>${fmt(W.overall)}٪</b></div>
+    <p class="small" style="margin:6px 0 12px">در این عدد، پرسش‌های حیاتی سه برابر و پرسش‌های مهم دو برابرِ پرسش‌های سلیقه‌ای اثر دارند.</p>
+    ${rows}${chart}`);
+}
+
 /* ---------- سازه‌ها: سنجش «شکاف اصل و اجرا» ---------- */
 const CONSTRUCTS=[
  {id:'fin', icon:'💰', title:'شفافیت مالی',
@@ -1548,16 +1679,26 @@ const CONSTRUCTS=[
  {id:'talk', icon:'💬', title:'گفت‌وگو و شنیده‌شدن',
   pr:['comm_1','comm_3'], pa:['comm_2','comm_5','comm_6','comm_11','comm_12'],
   why:'در اصل، هر دو گفت‌وگوی باز را می‌خواهید؛ اما در عادت‌های واقعی گفت‌وگو (شیوه‌ی شروع، عذرخواهی، معنی سکوت، جبران) هم‌نظر نیستید.'},
+ {id:'outer', icon:'🚧', title:'مرزهای بیرونی رابطه', intim:true,
+  pr:['commit_7','trust_1','int_151'], pa:['int_64','int_171','int_172','int_152'],
+  why:'در سطح اصل، تکلیف‌تان با انحصار رابطه و تعریف خیانت روشن است؛ اما در موقعیت‌های مشخص (سفر مشترک، فضاهای برهنه، حضور نفر سوم، یا تصورِ بودنِ دیگری با کسی) پاسخ‌ها هم‌جهت نیستند. این‌جا همان نقطه‌ای است که «توافق کلی» در لحظه‌ی واقعی می‌شکند؛ بهتر است پیش از سفر یا موقعیت مشابه، صریح و بی‌ابهام تکلیفش را روشن کنید.'},
+ {id:'consent', icon:'🤝', title:'رضایت و آزادیِ «نه» در رابطه', intim:true,
+  pr:['int_4','int_6','int_65'], pa:['int_150','int_5','int_170'],
+  why:'روی اصلِ «رضایت شرط است و هر نه محترم است» توافق دارید، ولی در موقعیت‌های واقعی (اختلاف میل در لحظه، انتظارات سنتی، یا بازی‌هایی که خواسته‌ی برنده را تعیین می‌کند) فاصله دارید. اصلی که در لحظه‌ی سخت اجرا نشود، هنوز به توافق تبدیل نشده است.'},
  {id:'legal', icon:'📜', title:'برابری در حرف و در سند',
   pr:['values_7','legal_2'], pa:['legal_1','legal_3','legal_9','money_13'],
   why:'در سطح باور به برابری حقوق نزدیک‌اید، ولی وقتی پای شروط ضمن عقد و تضمین‌های حقوقی وسط می‌آید فاصله پیدا می‌شود. این شکاف، شایع‌ترین شکافِ همین آزمون است.'}
 ];
-function qTextOf(id){ const t=activeTopics().find(x=>x.id===(id.indexOf('c_')===0?'custom':id.split('_')[0]));
+function qTextOf(id){
+  if(String(id).indexOf('int_')===0){ const i=+String(id).slice(4)-1; if(!INT_QS[i])return null;
+    return {topic:{id:'intimacy',icon:'❤️',title:'زناشویی'}, q:{id,text:INT_QS[i]}, idx:i}; }
+  const t=activeTopics().find(x=>x.id===(id.indexOf('c_')===0?'custom':id.split('_')[0]));
   if(!t)return null; const q=t.qs.find(x=>x.id===id); return q?{topic:t,q}:null; }
 function avgOf(ids){ const v=ids.map(aVal).filter(x=>x); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; }
 function gapFindings(){
   const out=[];
   CONSTRUCTS.forEach(c=>{
+    if(c.intim && !S.intimacyEnabled) return;
     const pv=c.pr.map(aVal).filter(x=>x), cv=c.pa.map(aVal).filter(x=>x);
     if(pv.length<1 || cv.length<2) return;
     const pm=avgOf(c.pr), cm=avgOf(c.pa);
@@ -1575,6 +1716,9 @@ function skipClusters(){ const out=[];
     if(sk>t.qs.length/3) out.push({t,sk}); });
   return out.sort((a,b)=>b.sk/b.t.qs.length - a.sk/a.t.qs.length);
 }
+function intLeft(){ if(!S.intimacyEnabled) return 0; let n=0;
+  const lim = S.intStep3?INT_QS.length:(S.intStep2?INT_STEP3_FROM:INT_FRANK_FROM);
+  for(let i=0;i<lim;i++){ const id='int_'+(i+1); if(!aVal(id)&&!aSkip(id)) n++; } return n; }
 function gapCardHTML(){
   if(bankLeft()>0) return '';
   const fs=gapFindings(), sc=skipClusters();
@@ -1631,7 +1775,7 @@ const SESSIONS=[
   goal:'رابطه با دو خانواده و مرزهایش، به‌علاوه‌ی جزئیات روزمره‌ای که کیفیت واقعی زندگی مشترک را می‌سازند: خواب، نظم، غذا، حیوان خانگی و عادت‌ها.'},
  {n:15,kind:'test',icon:'💞',test:'love',title:'آزمون زبان‌های عشق',pri:'شناخت',
   goal:'محبت را از چه راهی حس می‌کنید و از چه راهی ابراز؟ بیشتر زوج‌ها محبت می‌ورزند، فقط به زبانی که دیگری نمی‌فهمد.'},
- {n:16,kind:'qs',icon:'💗',title:'عشق، فراغت، دوستان و فضای مجازی',pri:'تکمیلی',topics:['love','leisure','tech'],fin:'f10',
+ {n:16,kind:'qs',icon:'💗',title:'عشق، فراغت، سرگرمی و فضای مجازی',pri:'تکمیلی',topics:['love','leisure','tech','fun'],fin:'f10',
   goal:'نیازهای عاطفی هرکدام، شیوه‌ی ابراز محبت، تفریح و سفر، و قاعده‌های فضای مجازی. آخرین جلسه‌ی پرسش‌ها را با گرم‌ترین بخش تمام می‌کنیم.',
   note:{ic:'❤️',t:'بعد از این جلسه، اگر <b>هر دو</b> توافق داشتید، می‌توانید بخش زناشویی را از تب «ابزار» فعال کنید و <b>به پله‌ی اول آن</b> پاسخ بدهید. پله‌های ۲ و ۳ بماند برای وقتی که به شناخت نسبی و احساس امنیت رسیده‌اید.'}},
  {n:17,kind:'test',icon:'🧩',test:'iq',title:'بازی پایانی: سنجش توانایی ذهنی',pri:'سرگرمی',
@@ -2000,16 +2144,17 @@ function byeCard(){ return `<div class="byecard">
   <p>اپلیکیشن <b>هم‌مسیر</b> تلاش کرده با گردآوری پرسش‌ها و آزمون‌ها، ساختن یک سیستم نمره‌دهی، و جدا کردنِ بخش سوالات زناشویی به شکل کامل و مستقل، به کسانی که می‌خواهند وارد یک رابطه‌ی جدی شوند کمک کند همدیگر را بهتر بشناسند — و اگر شرم یا ترسی در مطرح‌کردن پرسش‌هایشان دارند، به واسطه‌ی همین برنامه برطرف شود.</p>
   <p>امیدوارم در ادامه‌ی راهِ پرنشیب‌وفرازِ زندگی مشترک همواره موفق باشید و از داشتن همدیگر و در کنار هم بودن لذت ببرید.</p>
   <div class="scale">زندگی فقط رابطه‌ی جنسی نیست، ولی نبودِ یک رابطه‌ی باکیفیت می‌تواند زمینه‌سازِ بروز مشکلات شود؛ و برعکس، وجود مشکلات دیگر در زندگی هم بر کیفیت رابطه‌ی جنسی اثر می‌گذارد. پس این حوزه، <b>ترازوی بسیار مهمی برای سنجش کیفیت رابطه در تمام شئون زندگی است.</b></div>
-  <p>در ادامه، برای زوج‌هایی که رابطه‌ی جنسی را شروع کرده‌اند یا می‌خواهند شروع کنند، وب‌سایتی معرفی می‌شود که در آن انواع پوزیشن‌ها و ترفندهای داشتن رابطه‌ی باکیفیت قرار گرفته است.</p>
-  <div class="warn">
-    <div class="wt"><span>⚠️</span> پیش از باز کردن، این را بخوانید</div>
-    <p>به این نکته دقت کنید که <b>هر دو طرف</b> باید با خواندن مطالب اروتیک و جنسی، و دیدن تصاویر و فیلم‌هایی که در آن‌ها دخول، ارگاسم و تصاویر واضح از آلت تناسلی زنانه و مردانه نمایش داده می‌شود، مشکلی نداشته باشند.</p>
-    <p>و اگر هنگام تماشا یا به هر دلیل دیگری یکی از طرفین نخواست ادامه دهد، <b>به نظرش احترام بگذارید.</b></p>
-  </div>
+  ${SITE_ADULT?`<p>در ادامه، برای زوج‌هایی که رابطه‌ی جنسی را شروع کرده‌اند یا می‌خواهند شروع کنند، وب‌سایتی معرفی می‌شود که در آن انواع پوزیشن‌ها و ترفندهای داشتن رابطه‌ی باکیفیت قرار گرفته است.</p>`:(SITE_INTRO?`<p>${esc(SITE_INTRO)}</p>`:'')}
+  ${SITE_ADULT?`<div class="warn">
+    <div class="wt"><span>⚠️</span> پیش از باز کردن، حتماً این را بخوانید</div>
+    <p>محتوای این سایت <b>کاملاً صریح و بزرگ‌سال</b> است. در آن مطالب اروتیک و جنسی، و تصاویر و فیلم‌هایی نمایش داده می‌شود که شامل این موارد است: زن و مرد کاملاً برهنه، نمایش واضح و نزدیکِ آلت تناسلی زنانه و مردانه، ارگاسم، انواع دخول، و رابطه‌ی دهانی.</p>
+    <p><b>اگر با دیدن چنین محتوایی مشکل دارید، توصیه می‌کنیم اصلاً این لینک را باز نکنید.</b> هیچ بخشی از این برنامه به دیدن آن وابسته نیست و ندیدنش هیچ چیزی از مسیر شما کم نمی‌کند.</p>
+    <p>اگر هم تصمیم گرفتید بازش کنید، <b>هر دو نفر</b> باید با آن راحت باشند — نه یکی به‌خاطر دیگری. و اگر هنگام تماشا یا به هر دلیل دیگری یکی از طرفین نخواست ادامه دهد، بدون اصرار و بدون سؤال‌پیچ‌کردن <b>به نظرش احترام بگذارید.</b></p>
+  </div>`:''}
   <div class="linkspot">
     <a class="btn rose" href="${SITE_URL}" target="_blank" rel="noopener noreferrer">🔗 ${esc(SITE_NAME)}</a>
   </div>
-  <div class="trbox">
+  ${SITE_ADULT?`<div class="trbox">
     <div class="th"><span>🌐</span> سایت انگلیسی است — چطور فارسی‌اش کنیم؟</div>
     <div class="sub2">مرورگرها ترجمه‌ی خودکار دارند و کل صفحه را فارسی نشان می‌دهند.</div>
 
@@ -2026,7 +2171,7 @@ function byeCard(){ return `<div class="byecard">
     <div class="trgrp"><b>اگر ترجمه‌ی خودکار کار نکرد</b>
       <p>بعضی سایت‌ها محتوایشان را با جاوااسکریپت بارگذاری می‌کنند و مترجمِ مرورگر روی آن‌ها می‌لنگد. در این حالت متن موردنظر را کپی کنید و در <span class="k">translate.google.com</span> بچسبانید. تصویرها هم اصلاً ترجمه نمی‌شوند، ولی معمولاً نیازی هم نیست.</p>
     </div>
-  </div>
+  </div>`:''}
   <p style="text-align:center;margin-top:14px">با تشکر از اینکه با <b>هم‌مسیر</b> همراه بودید.</p>
   <div class="sign">رابطه‌ای گرم، صمیمی، خوشبخت<br>و پرحرارت داشته باشید…</div>
 </div>`; }
@@ -2302,6 +2447,8 @@ function renderResults(){
             <span class="small">(${fmt(t.answered)}/${fmt(t.total)})</span></div>
           <div class="bar"><i style="width:${t.answered?t.pct:0}%;background:${t.answered?barColor(t.pct):'var(--track)'}"></i></div></div>`).join('')}`);
 
+    html+=weightCardHTML();
+
     if(st.flags.length){ html+=rsec('🗣️','موضوعات نیازمند گفت‌وگو ('+fmt(st.flags.length)+')',
         `<p class="sub">پرسش‌هایی که نمره‌ی ۱ یا ۲ گرفته‌اند؛ پیشنهاد می‌شود با آرامش دوباره درباره‌شان حرف بزنید.</p>
         ${st.flags.map(f=>`<div class="flag"><div class="ft">${f.icon} ${f.topic} · نمره ${fmt(f.v)}</div>${esc(f.text)}</div>`).join('')}`);
@@ -2562,7 +2709,7 @@ function renderTools(){
       <button class="btn danger" data-act="resetall">حذف کامل و شروع از نو</button>
     </div>
   </div>
-  <p class="footer-note">هم‌مسیر · نسخه ۱٫۳ · همه‌ی داده‌ها فقط نزد شماست.</p>`;
+  <p class="footer-note">هم‌مسیر · نسخه ۱٫۳٫۱ · همه‌ی داده‌ها فقط نزد شماست.</p>`;
 }
 
 /* ================= گزارش ================= */
@@ -2607,6 +2754,10 @@ function buildReport(){
     const la=loveScore('a'),lb=loveScore('b');
     if(la._ranked&&la._ranked.length&&lb._ranked&&lb._ranked.length) L.push('زبان عشق: '+nameA()+' = '+LOVE_LABELS[la._ranked[0]]+' | '+nameB()+' = '+LOVE_LABELS[lb._ranked[0]]);
   }
+  { const W=weightedStats();
+    if(W.overall!=null){ L.push(''); L.push('— تفاهم به تفکیک اهمیت —');
+      L.push('تفاهم وزنی کل: '+fmt(W.overall)+'٪');
+      W.tiers.forEach(x=>{ if(x.n) L.push('• '+x.label+': '+fmt(x.pct)+'٪ از '+fmt(x.n)+' پرسش'); }); } }
   { const fs=(bankLeft()===0)?gapFindings():[];
     if(fs.length){ L.push(''); L.push('— شکاف اصل و اجرا —');
       fs.forEach(f=>{ L.push('• '+f.c.title+' (اصل '+fmt1(f.pm)+' / اجرا '+fmt1(f.cm)+')');
@@ -2776,7 +2927,13 @@ document.addEventListener('click',e=>{
     setTimeout(()=>{ const c=el('q_'+target); if(c&&c.scrollIntoView)c.scrollIntoView({behavior:'smooth',block:'center'}); },60); }
   else if(a==='refreshres'){ renderResults(); toast('نتایج به‌روز شد'); }
   else if(a==='gsafety')openSafety();
-  else if(a==='goq'){ S.ui.qFilter='all'; S.ui.tMode='topics'; scheduleSave(); openTopic(t.dataset.topic,t.dataset.q); }
+  else if(a==='goq'){ S.ui.qFilter='all'; const qid=t.dataset.q;
+    if(t.dataset.topic==='intimacy'){ const i=+String(qid).slice(4)-1;
+      const need = i>=INT_STEP3_FROM?3 : (i>=INT_FRANK_FROM?2:1);
+      if((need===2&&!S.intStep2)||(need===3&&!S.intStep3)){ toast('این پرسش در پله‌ای است که هنوز باز نشده'); return; }
+      S.ui.intTab=need; scheduleSave(); renderIntimacy(); go('intimacy');
+      setTimeout(()=>{ const c=el('q_'+qid); if(c&&c.scrollIntoView)c.scrollIntoView({behavior:'smooth',block:'center'}); },80); return; }
+    S.ui.tMode='topics'; scheduleSave(); openTopic(t.dataset.topic,qid); }
   else if(a==='goskip'){ S.ui.qFilter='skip'; S.ui.tMode='topics'; scheduleSave(); openTopic(t.dataset.topic); toast('فهرست «برای بعد» این بخش'); }
   else if(a==='cleartopic')clearTopicAnswers(t.dataset.topic);
   else if(a==='cleartest')clearTest(t.dataset.test);
