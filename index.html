@@ -467,6 +467,12 @@ html[data-theme="dark"] .wtotal b{color:var(--teal2)}
 .iqhide{display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px dashed var(--line);
   background:var(--opt); border-radius:11px; padding:10px 12px; font-size:13px; color:var(--muted)}
 
+.agebox{text-align:start; font-size:13px; line-height:2.05}
+.agebox p{margin:0 0 8px; color:var(--muted)}
+.agebox ul{margin:0 0 8px; padding-inline-start:18px}
+.agebox li{margin-bottom:4px; color:var(--ink)}
+.agebox .q{background:var(--track); border-radius:10px; padding:8px 11px; margin:0; color:var(--ink)}
+.guidebox .gin .infolist{margin:0}
 .why .gin p{font-size:13.5px; line-height:2.15; color:var(--ink); margin:0 0 11px}
 .why .gin p b{color:var(--green)}
 .why>summary{background:linear-gradient(160deg,#F3F7F4,#EDF3EE)}
@@ -1375,7 +1381,7 @@ const RATE_COLORS=['var(--r1)','var(--r2)','var(--r3)','var(--r4)','var(--r5)'];
    SITE_ADULT : اگر مقصد محتوای جنسیِ صریح دارد true کنید تا هشدار محتوای بزرگ‌سال
                 و راهنمای ترجمه‌ی سایت انگلیسی هم نمایش داده شود. */
 const SITE_NAME='پوزیشن‌های هم‌آغوشی';
-const SITE_URL='https://www.google.com/search?q='+encodeURIComponent('sex positions guide for couples'); /* ← نشانی سایت خودتان را جایگزین کنید */
+const SITE_URL='https://www.bestsexpositions.com'; /* ← نشانی سایت خودتان را جایگزین کنید */
 const SITE_INTRO='';
 const SITE_ADULT=true;
 
@@ -1577,7 +1583,7 @@ function whyCard(){
 }
 function guideCard(){
   const g=(ic,b,t)=>`<div class="gitem"><span class="gi">${ic}</span><div><b>${b}</b><span class="gt">${t}</span></div></div>`;
-  return `<details class="guidebox" ${S.guideSeen?'':'open'}>
+  return `<details class="guidebox">
     <summary><span>📖</span> قوانین پاسخ‌دهی — قبل از شروع، این را با هم بخوانید <span class="ar"></span></summary>
     <div class="gin">
       ${g('🕊️','این‌جا اتاق امن ماست','هرچه این‌جا گفته می‌شود برای شناختِ هم است، نه مدرک علیه هم. قانون اول و مهم‌ترین قانون: هیچ پاسخی، هیچ‌وقت، در هیچ دعوایی سلاح نمی‌شود. اگر این را نمی‌پذیرید، شروع نکنید.')}
@@ -2051,12 +2057,14 @@ function renderHome(){
     <div class="field"><label>نفر دوم</label><input id="nameB" value="${esc(S.names.b)}" placeholder="مثلاً: امیر"></div>
   </div>
 
-  <div class="card">
-    <h2><span class="em">📖</span> چطور نمره می‌دهیم؟</h2>
+  <details class="guidebox">
+    <summary><span>📖</span> چطور نمره می‌دهیم؟ <span class="ar"></span></summary>
+    <div class="gin">
     <p class="sub" style="margin-bottom:6px">هر پرسش را با هم بخوانید، <b>گفت‌وگو کنید</b>، بعد با توافق به میزان تفاهم‌تان از ۱ تا ۵ نمره بدهید:</p>
     <div class="legend">${RATE_LABELS.map((l,i)=>`<div class="li"><span class="chip" style="background:${RATE_COLORS[i]}">${fmt(i+1)}</span>${l}</div>`).join('')}</div>
     <div class="hint-gold" style="margin-top:12px"><b>لازم نیست همه را همین حالا جواب بدهید.</b> ممکن است بعضی پرسش‌ها برای ابتدای آشنایی زود باشد؛ زیر هر پرسش دکمه‌ی <b>«فعلاً رد می‌شویم»</b> هست — بدون هیچ توضیحی بزنید و بعداً از فیلتر <b>«برای بعد»</b> برگردید. نمره و تحلیل با همان پاسخ‌هایی که داده‌اید هم کار می‌کند و با فیلتر <b>«فقط بی‌پاسخ‌ها»</b> ادامه‌ی کار را راحت پیدا می‌کنید.</div>
-  </div>
+    </div>
+  </details>
 
   ${whyCard()}
 
@@ -2074,17 +2082,17 @@ function renderHome(){
     <button class="btn rose" data-act="gsafety">دیدن بخش ایمنی</button>
   </div>
 
-  <div class="card">
-    <h2><span class="em">🧭</span> راهنما</h2>
-    <div class="infolist">
+  <details class="guidebox">
+    <summary><span>🧭</span> راهنما <span class="ar"></span></summary>
+    <div class="gin"><div class="infolist">
       <div class="ii"><span class="ic">١</span><div class="tx"><b>مسیر ${fmt(SESSIONS.length)} جلسه‌ای را دنبال کنید</b>
         <span>${fmt(TOPICS.length-1)} موضوع کلیدی و ${fmt(TEST_ORDER.length)} آزمون شخصیت در ${fmt(SESSIONS.length)} جلسه‌ی اولویت‌بندی‌شده چیده شده‌اند؛ تصمیم‌سازترین‌ها اول و هر آزمون درست بعد از جلسه‌ی مرتبط با خودش. هر جلسه با دکمه‌ی «پایان جلسه» بسته می‌شود و جلسه‌ی بعدی در صفحه‌ی خانه پیشنهاد می‌شود. اگر ترجیح می‌دهید آزاد جلو بروید، در تب «پرسش‌ها» حالت «همه‌ی موضوع‌ها» را انتخاب کنید و روش نمره‌دهی را در کارت «قوانین پاسخ‌دهی» بخوانید.</span></div></div>
       <div class="ii"><span class="ic">٢</span><div class="tx"><b>آزمون‌های شخصیت کِی؟</b>
         <span>لازم نیست جداگانه سراغ‌شان بروید؛ خودشان در مسیر جلسه‌ها می‌آیند — هرکدام یک جلسه‌ی مستقل و سبک، درست بعد از جلسه‌ی پرسشی مرتبط با خودش (مثلاً آزمون باورهای مالی بعد از جلسه‌ی پول). اگر بخواهید بیرون از مسیر هم به آن‌ها دسترسی دارید: تب «شخصیت». تحلیل سازگاری‌تان در پایان مسیر و در تب «نتایج» می‌آید.</span></div></div>
       <div class="ii"><span class="ic">٣</span><div class="tx">
         <span><b style="display:inline;font-size:inherit;color:var(--green)">سوالات زناشویی:</b> ${fmt(INT_QS.length)} پرسش خصوصی در سه پله که به‌صورت پیش‌فرض غیرفعال است و از تب «ابزار» و فقط با توافق هر دو نفر روشن می‌شود؛ توصیه‌ی ما این است که تا پایان جلسه‌ی ${fmt(16)} سراغش نروید و بعد هم فقط به پله‌ی اول پاسخ بدهید و پله‌های ۲ و ۳ بماند برای وقتی که به شناخت نسبی و احساس امنیت رسیده‌اید.</span></div></div>
-    </div>
-  </div>
+    </div></div>
+  </details>
   <p class="footer-note">پاسخ‌ها فقط در مرورگرِ همین دستگاه ذخیره می‌شود و به هیچ سروری ارسال نمی‌شود؛ اگر فایل پشتیبان گرفتید، نگه‌داری امنش با خودتان است.<br>این ابزار جایگزین مشاوره‌ی تخصصی پیش از ازدواج نیست.</p>`;
 }
 
@@ -2730,7 +2738,7 @@ function renderTools(){
       <button class="btn danger" data-act="resetall">حذف کامل و شروع از نو</button>
     </div>
   </div>
-  <p class="footer-note">هم‌مسیر · نسخه ۱٫۳٫۱ · همه‌ی داده‌ها فقط نزد شماست.</p>`;
+  <p class="footer-note">هم‌مسیر · نسخه ۱٫۳٫۲ · همه‌ی داده‌ها فقط نزد شماست.</p>`;
 }
 
 /* ================= گزارش ================= */
@@ -2832,9 +2840,25 @@ function setPers(pid,who,v){
 function refreshPersChips(){ const cur=S.ui.persTab; document.querySelectorAll('#view-personality .chiptab').forEach(ch=>{
     const id=ch.dataset.tab; const p=testProgress(id); const done=p.a>=p.total&&p.b>=p.total;
     const b=ch.querySelector('.b'); if(b)b.textContent= done?'✓':fmt(Math.min(p.a,p.b))+'/'+fmt(p.total); }); }
-function toggleIntimacy(){ S.intimacyEnabled=!S.intimacyEnabled; scheduleSave(); renderNav(); renderTools();
-  toast(S.intimacyEnabled?'سوالات زناشویی فعال شد ❤️':'سوالات زناشویی غیرفعال شد');
-  if(!S.intimacyEnabled && S.ui.tab==='intimacy') go('home'); }
+function toggleIntimacy(){
+  if(!S.intimacyEnabled){
+    askConfirmHTML(`<b style="display:block;font-size:15px;margin-bottom:9px">ورود به بخش زناشویی</b>
+      <div class="agebox">
+        <p>این بخش شامل پرسش‌های صریح جنسی است و فقط برای <b>بزرگ‌سالان بالای ۱۸ سال</b> در نظر گرفته شده است.</p>
+        <p>با زدن «تأیید» اعلام می‌کنید که:</p>
+        <ul>
+          <li>هر دوی شما <b>بالای ۱۸ سال</b> هستید؛</li>
+          <li>زوجی هستید که <b>با توافق و رضایت کامل هر دو نفر</b> وارد این بخش می‌شوید؛</li>
+          <li>هیچ‌کدام به‌خاطر اصرار، رودربایستی یا فشار دیگری این‌جا نیست.</li>
+        </ul>
+        <p class="q">اگر حتی یکی از این سه مورد برقرار نیست، «انصراف» را بزنید؛ این بخش هر وقت خواستید سر جایش است.</p>
+      </div>`, ()=>{ S.intimacyEnabled=true; scheduleSave(); renderNav(); renderTools();
+        toast('سوالات زناشویی فعال شد ❤️'); });
+    return;
+  }
+  S.intimacyEnabled=false; scheduleSave(); renderNav(); renderTools();
+  toast('سوالات زناشویی غیرفعال شد');
+  if(S.ui.tab==='intimacy') go('home'); }
 function addCustom(){ const ta=el('newQText'); if(!ta)return; const text=ta.value.trim();
   if(!text){toast('متن پرسش خالی است');return;}
   S.custom.push({id:'c_'+Date.now().toString(36)+Math.floor(Math.random()*1000),text});
@@ -2859,6 +2883,7 @@ let toastTimer=null;
 function toast(msg){ const t=el('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2100); }
 let modalCb=null;
 function askConfirm(msg,cb){ modalCb=cb; el('modalMsg').textContent=msg; el('modal').classList.add('show'); }
+function askConfirmHTML(html,cb){ modalCb=cb; el('modalMsg').innerHTML=html; el('modal').classList.add('show'); }
 function closeModal(){ el('modal').classList.remove('show'); modalCb=null; }
 function updateHeader(){ const st=stats(); el('hprog').textContent=fmt(st.answered)+' / '+fmt(st.total); }
 function syncHeaderH(){ const h=document.querySelector('header'); if(!h)return;
