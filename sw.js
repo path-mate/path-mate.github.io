@@ -1,5 +1,5 @@
 /* هم‌مسیر — سرویس‌ورکر آفلاین (cache-first) | نسخه ۱٫۳ */
-const C = 'hammaseer-v1-3';
+const C = 'hammaseer-v1-4-0';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(C).then(c => c.addAll(CORE).catch(() => {})).then(() => self.skipWaiting()));
